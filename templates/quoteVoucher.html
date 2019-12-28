@@ -1,0 +1,120 @@
+<html>
+    <head>
+        <title>Quote Voucher</title>
+        <style>
+            table {
+              border-collapse: collapse;
+              border: 1px solid black;
+            }
+
+            th,td {
+              border: 1px solid black;
+            }
+
+            table.a {
+              table-layout: auto;
+              width: 100%;
+            }
+
+            table.b {
+              table-layout: fixed;
+              width: 180px;
+            }
+
+            table.c {
+              table-layout: auto;
+              width: 100%;
+            }
+
+            table.d {
+              table-layout: fixed;
+              width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div style="float:left"><img src="{{image_path}}" height="150px"></div>
+            <div style="float:right">
+                <h1>Anand Tours & Travels</h1>
+                <p>FF-1 Elegance Complex, 43-B Purshotam Nagar,<br>opp. Vrund Complex, BPC Road,<br>VADODARA - 390020<br>(O) 0265-2338203 Mobile : +91 9662045203 / 9925227203<br>EMAIL: anandtours@outlook.com</p>
+            </div>
+            <hr style="position:relative;width:100%!important">
+        </div>
+        <div>
+            <p><b>Number of Pax(Adult/Child)</b> : {{no_of_pax}}</p>
+            <p><b>Date of Arrival </b> : {{arrival}}</p>
+            <p><b>Date of Departure </b>: {{departure}}</p>
+            <p><b>No. of rooms </b>: {{rooms}}</p>
+            <p><b>Duration </b>: {{duration}}</p>
+            {% for i in itenary %}
+                <p>
+                    <h3>{{i.title}}</h3>
+                    <p>{{i.description}}
+                </p>
+            {% endfor %}
+        </div>
+        <br><br>
+        <div>
+            <table class="a">
+                <tr>
+                    <th>Destination</th>
+                    <th>Hotel Names</th>
+                    <th>Room Type</th>
+                    <th>Meal Plan</th>
+                </tr>
+                {% for i in hotels %}
+                <tr>
+                    <td>{{i.place}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.room_type}}</td>
+                    <td>{{i.meal_plan}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <br><br>
+        <div>
+            <table class="a"><tr><th>Transportation</th></tr></table>
+            <table class="a">
+                <tr>
+                    <th>Vehicle Category</th>
+                    <th>Vehicle Name</th>
+                    <th>No of Vehicle</th>
+                </tr>
+                {% for i in vehicle %}
+                  <tr>
+                    <td>{{i.category}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.no_of_vehicle}}</td>
+                  </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <br><br>
+        <div>
+            <table class="a"><tr><th>Total Cost</th></tr></table>
+            <table class="a">
+              <tr>
+                <th>Total Package Cost </th>
+                <th>{{amount}}</th>
+              </tr>
+            </table>
+        </div>
+        <br><br>
+        <h2> Package Inclusion:</h2>
+        <ul>
+            {% for i in inclusion %}
+            <li>{{i}}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <h2> Package Exclusion</h2>
+        <ul>
+            {% for i in exclusion %}
+            <li>{{i}}</li>
+            {% endfor %}
+        </ul>
+        <h3>All Trips are subjected to weather conditions</h3>
+    </body>
+</html>
