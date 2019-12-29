@@ -17,6 +17,9 @@ class QuoteVoucher(models.Model):
     price = models.IntegerField()
     package_inclusion = models.TextField()
     package_exclusion = models.TextField()
+    reservation_policy = models.TextField()
+    cancellation_policy = models.TextField()
+    terms_conditions = models.TextField()
 
     def save(self, *args, **kwargs):
         output_path = os.getcwd() + '/templates/output/test.pdf'
@@ -31,7 +34,10 @@ class QuoteVoucher(models.Model):
                 'vehicle': self.vehicle_set.all().values,
                 'amount': self.price,
                 'inclusion': self.package_inclusion.split("\n"),
-                'exclusion': self.package_exclusion.split("\n")}
+                'exclusion': self.package_exclusion.split("\n"),
+                'reservation_policy': self.reservation_policy.split("\n"),
+                'cancellation_policy': self.cancellation_policy.split("\n"),
+                'terms': self.terms_conditions.split("\n")}
         template = get_template('quoteVoucher.html')
         html = template.render(data)
         pdfkit.from_string(html, output_path)

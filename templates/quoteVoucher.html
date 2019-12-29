@@ -115,6 +115,27 @@
             <li>{{i}}</li>
             {% endfor %}
         </ul>
-        <h3>All Trips are subjected to weather conditions</h3>
+        <br><br>
+        <h2> Terms And Conditions</h2>
+        <h3>Reservation Policy:</h3>
+            <ul>
+                {% for i in reservation_policy %}
+                <li>{{i}}</li>
+                {% endfor %}
+            </ul>
+        <br>
+        <h3>Cancellation Policy:</h3>
+            <ul>
+                {% for i in cancellation_policy %}
+                <li>{{i}}</li>
+                {% endfor %}
+            </ul>
+        <br>
+        <h3>Terms & Conditions / Note:</h3>
+            <ul>
+                {% for i in terms %}
+                <li>{{i}}</li>
+                {% endfor %}
+            </ul>
     </body>
 </html>
