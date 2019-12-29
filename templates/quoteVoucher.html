@@ -42,33 +42,43 @@
             <hr style="position:relative;width:100%!important">
         </div>
         <div>
+            <p><b>Date : {{current_date}}</b></p>
+            <p>Dear Sir,<br><br>Greetings from Anand Tours & Travels!!!!!!!!!!!!!!!
+                <br><br>Further to your mail please find below details of your package as requested.
+            </p>
+            <p><b>Duration / Name of Package </b>: {{duration}}</p>
             <p><b>Number of Pax(Adult/Child)</b> : {{no_of_pax}}</p>
-            <p><b>Date of Arrival </b> : {{arrival}}</p>
-            <p><b>Date of Departure </b>: {{departure}}</p>
             <p><b>No. of rooms </b>: {{rooms}}</p>
-            <p><b>Duration </b>: {{duration}}</p>
-            {% for i in itenary %}
+            <p><b>Date of Arrival </b> : {{arrival}}</p>
+            <p><b>Pickup Place </b>: {{departure}}</p>
+            <p><b><h2>Itinerary</h2></b></p>
+            {% for i in itinerary %}
                 <p>
                     <h3>{{i.title}}</h3>
-                    <p>{{i.description}}
+                    <span style="white-space: pre-line">{{i.description}}</span>
                 </p>
             {% endfor %}
         </div>
         <br><br>
         <div>
+            <table class="a"><tr><th>Hotel Details</th></tr></table>
             <table class="a">
                 <tr>
                     <th>Destination</th>
                     <th>Hotel Names</th>
+                    <th>Check In</th>
+                    <th>Check Out</th>
                     <th>Room Type</th>
                     <th>Meal Plan</th>
                 </tr>
                 {% for i in hotels %}
                 <tr>
-                    <td>{{i.place}}</td>
-                    <td>{{i.name}}</td>
-                    <td>{{i.room_type}}</td>
-                    <td>{{i.meal_plan}}</td>
+                    <td><center>{{i.place}}</td>
+                    <td><center>{{i.name}}</td>
+                    <td><center>{{i.check_in}}</td>
+                    <td><center>{{i.check_out}}</td>
+                    <td><center>{{i.room_type}}</td>
+                    <td><center>{{i.meal_plan}}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -84,9 +94,9 @@
                 </tr>
                 {% for i in vehicle %}
                   <tr>
-                    <td>{{i.category}}</td>
-                    <td>{{i.name}}</td>
-                    <td>{{i.no_of_vehicle}}</td>
+                    <td><center>{{i.category}}</td>
+                    <td><center>{{i.name}}</td>
+                    <td><center>{{i.no_of_vehicle}}</td>
                   </tr>
                 {% endfor %}
             </table>
@@ -99,6 +109,24 @@
                 <th>Total Package Cost </th>
                 <th>{{amount}}</th>
               </tr>
+            </table>
+        </div>
+        <br><br>
+        <div>
+            <table class="a"><tr><th>Special Service</th></tr></table>
+            <table class="a">
+                <tr>
+                    <th>Date</th>
+                    <th>Service</th>
+                    <th>Description</th>
+                </tr>
+                {% for i in special_service %}
+                  <tr>
+                    <td><center>{{i.date}}</td>
+                    <td><center>{{i.service}}</td>
+                    <td><center>{{i.description}}</td>
+                  </tr>
+                {% endfor %}
             </table>
         </div>
         <br><br>
@@ -116,26 +144,27 @@
             {% endfor %}
         </ul>
         <br><br>
-        <h2> Terms And Conditions</h2>
-        <h3>Reservation Policy:</h3>
+        <h2>Reservation Policy:</h2>
             <ul>
                 {% for i in reservation_policy %}
                 <li>{{i}}</li>
                 {% endfor %}
             </ul>
         <br>
-        <h3>Cancellation Policy:</h3>
+        <h2>Cancellation Policy:</h2>
             <ul>
                 {% for i in cancellation_policy %}
                 <li>{{i}}</li>
                 {% endfor %}
             </ul>
         <br>
-        <h3>Terms & Conditions / Note:</h3>
+        <h2>Terms & Conditions / Note:</h2>
             <ul>
                 {% for i in terms %}
                 <li>{{i}}</li>
                 {% endfor %}
             </ul>
+        <br>
+        <p><b>Thanks & regards,<br>For ANAND TOURS & TRAVELS<br>VARSHA CHANCHLANI</b></p>
     </body>
 </html>

@@ -5,6 +5,7 @@ from django.core.mail import EmailMessage
 import pdfkit
 import os
 from django.template.loader import get_template
+from datetime import date
 
 
 class QuoteVoucher(models.Model):
@@ -12,7 +13,7 @@ class QuoteVoucher(models.Model):
     no_of_pax = models.CharField(max_length=200)
     package_type = models.CharField(max_length=200)
     arrival = models.DateField()
-    departure = models.DateField()
+    pickup_place = models.CharField(max_length=200)
     no_of_rooms = models.CharField(max_length=200)
     price = models.IntegerField()
     package_inclusion = models.TextField()
@@ -23,13 +24,14 @@ class QuoteVoucher(models.Model):
 
     def save(self, *args, **kwargs):
         output_path = os.getcwd() + '/templates/output/test.pdf'
-        data = {'image_path': os.getcwd() + '/templates/images/logo.png',
+        data = {'current_date': date.today(),
+                'image_path': os.getcwd() + '/templates/images/logo.png',
                 'no_of_pax': self.no_of_pax,
                 'arrival': self.arrival,
-                'departure': self.departure,
+                'departure': self.pickup_place,
                 'rooms': self.no_of_rooms,
                 'duration': self.package_type,
-                'itenary': self.itenary_set.all().values,
+                'itinerary': self.itenary_set.all().values,
                 'hotels': self.hotel_set.all().values,
                 'vehicle': self.vehicle_set.all().values,
                 'amount': self.price,
@@ -37,7 +39,8 @@ class QuoteVoucher(models.Model):
                 'exclusion': self.package_exclusion.split("\n"),
                 'reservation_policy': self.reservation_policy.split("\n"),
                 'cancellation_policy': self.cancellation_policy.split("\n"),
-                'terms': self.terms_conditions.split("\n")}
+                'terms': self.terms_conditions.split("\n"),
+                'special_service': self.specialservice_set.all().values}
         template = get_template('quoteVoucher.html')
         html = template.render(data)
         pdfkit.from_string(html, output_path)
@@ -82,3 +85,10 @@ class Vehicle(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class SpecialService(models.Model):
+    voucher = models.ForeignKey(QuoteVoucher)
+    date = models.DateField()
+    service = models.CharField(max_length=200)
+    description = models.TextField()
