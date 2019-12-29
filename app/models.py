@@ -7,6 +7,7 @@ import os
 from django.template.loader import get_template
 from datetime import date
 import time
+from threading import Thread
 
 
 class QuoteVoucher(models.Model):
@@ -28,6 +29,74 @@ class QuoteVoucher(models.Model):
     phone_number = models.IntegerField()
 
     def save(self, *args, **kwargs):
+        Worker(self).start()
+        return super(QuoteVoucher, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.package_type
+
+
+class Itenary(models.Model):
+    voucher = models.ForeignKey(QuoteVoucher)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return self.title
+
+
+class Hotel(models.Model):
+    voucher = models.ForeignKey(QuoteVoucher)
+    name = models.CharField(max_length=255)
+    check_in = models.DateField()
+    check_out = models.DateField()
+    address = models.TextField(blank=True)
+    contact_person = models.TextField(max_length=200, blank=True)
+    phone_number = models.IntegerField(blank=True)
+    contact_person_position = models.CharField(max_length=200, blank=True)
+    place = models.CharField(max_length=100)
+    meal_plan = models.CharField(max_length=100)
+    room_type = models.CharField(max_length=200)
+    occupancy_type = models.CharField(max_length=200)
+    no_of_rooms = models.IntegerField()
+    no_of_nights = models.IntegerField()
+
+    def __unicode__(self):
+        return self.name
+
+
+class Vehicle(models.Model):
+    voucher = models.ForeignKey(QuoteVoucher)
+    category = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+    no_of_vehicle = models.IntegerField()
+    number_plate = models.CharField(max_length=20)
+    no_of_days = models.IntegerField()
+    ac_available = models.BooleanField()
+    contact_person = models.CharField(max_length=200)
+    phone_number = models.CharField(max_length=12)
+    service_provider = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.name
+
+
+class SpecialService(models.Model):
+    voucher = models.ForeignKey(QuoteVoucher)
+    date = models.DateField()
+    service = models.CharField(max_length=200)
+    description = models.TextField()
+
+
+class Worker(Thread):
+    def __init__(self, voucher):
+        super(Worker, self).__init__()
+        self.voucher = voucher
+
+    def run(self):
+        time.sleep(20)
+        print "Sending Mail....."
+        self = self.voucher
         output_path = os.getcwd() + '/templates/output/test.pdf'
         if not self.confirmed:
             data = {'current_date': date.today(),
@@ -100,59 +169,3 @@ class QuoteVoucher(models.Model):
             msg.content_subtype = "html"
             msg.attach_file(output_path)
             msg.send()
-        return super(QuoteVoucher, self).save(*args, **kwargs)
-
-    def __unicode__(self):
-        return self.package_type
-
-
-class Itenary(models.Model):
-    voucher = models.ForeignKey(QuoteVoucher)
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-
-    def __unicode__(self):
-        return self.title
-
-
-class Hotel(models.Model):
-    voucher = models.ForeignKey(QuoteVoucher)
-    name = models.CharField(max_length=255)
-    check_in = models.DateField()
-    check_out = models.DateField()
-    address = models.TextField(blank=True)
-    contact_person = models.TextField(max_length=200, blank=True)
-    phone_number = models.IntegerField(blank=True)
-    contact_person_position = models.CharField(max_length=200, blank=True)
-    place = models.CharField(max_length=100)
-    meal_plan = models.CharField(max_length=100)
-    room_type = models.CharField(max_length=200)
-    occupancy_type = models.CharField(max_length=200)
-    no_of_rooms = models.IntegerField()
-    no_of_nights = models.IntegerField()
-
-    def __unicode__(self):
-        return self.name
-
-
-class Vehicle(models.Model):
-    voucher = models.ForeignKey(QuoteVoucher)
-    category = models.CharField(max_length=200)
-    name = models.CharField(max_length=200)
-    no_of_vehicle = models.IntegerField()
-    number_plate = models.CharField(max_length=20)
-    no_of_days = models.IntegerField()
-    ac_available = models.BooleanField()
-    contact_person = models.CharField(max_length=200)
-    phone_number = models.CharField(max_length=12)
-    service_provider = models.CharField(max_length=100)
-
-    def __unicode__(self):
-        return self.name
-
-
-class SpecialService(models.Model):
-    voucher = models.ForeignKey(QuoteVoucher)
-    date = models.DateField()
-    service = models.CharField(max_length=200)
-    description = models.TextField()
