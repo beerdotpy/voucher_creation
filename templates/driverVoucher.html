@@ -1,0 +1,134 @@
+<html>
+    <head>
+        <title>Quote Voucher</title>
+        <style>
+            table {
+              border-collapse: collapse;
+              border: 1px solid black;
+            }
+
+            th,td {
+              border: 1px solid black;
+            }
+
+            table.a {
+              table-layout: auto;
+              width: 100%;
+            }
+
+            table.b {
+              table-layout: fixed;
+              width: 180px;
+            }
+
+            table.c {
+              table-layout: auto;
+              width: 100%;
+            }
+
+            table.d {
+              table-layout: fixed;
+              width: 100%;
+            }
+        </style>
+    </head>
+        <div class="wrapper">
+            <div style="float:left"><img src="{{image_path}}" height="150px"></div>
+            <div style="float:right">
+                <h1>Anand Tours & Travels</h1>
+                <p>Tower-C, SF, Shop No. 09 Vardhaman Enclave, <br>Opp. Hotel Labh Regency, Atladara,<br>Vadodara – 390012 <br>(O) 0265-2338203 (M) : +91 9662045203 / 9925227203<br>EMAIL: anandtours@outlook.com</p>
+            </div>
+            <center><b><p style="position:relative;top:180px">DRIVER VOUCHER</p></b></center>
+            <hr style="position:relative;width:100%!important;top:40px">
+            <br>
+        </div>
+        <div>
+            <p style="position:absolute"><b>Date : {{current_date}}</b></p>
+            <p align="right" style="position:relative">Confirmation No. : {{confirmation_no}}</p>
+            <br>
+            <p><b>Name of the Guest</b> : {{guest_name}}</p>
+            <p>{{duration}}</p>
+            <p>Pickup on <b>{{arrival}}</b></p>
+            <p>Pickup from <b>{{departure}}</b></p>
+            <u><b>Detailed Itinerary</b></u>
+            {% for i in itinerary %}
+                <p>
+                    <h3>{{i.title}}</h3>
+                    <span style="white-space: pre-line">{{i.description}}</span>
+                </p>
+            {% endfor %}
+        </div>
+        <br><br>
+        <div>
+            <u><b>Hotel Details</b></u>
+            {% for i in hotels %}
+            <table class="a">
+                <p>{{i.name}} Check in {{i.check_in}} - Check out {{i.check_out}}</p>
+                <tr>
+                    <th>Place</th>
+                    <th>Meal Plan</th>
+                    <th>Room Type</th>
+                </tr>
+                <tr>
+                    <td><center>{{i.place}}</td>
+                    <td><center>{{i.meal_plan}}</td>
+                    <td><center>{{i.room_type}}</td>
+                </tr>
+            </table>
+            {% endfor %}
+        </div>
+        <br><br>
+        <div>
+            <u><b>Vehicle Details</b></u>
+            <table class="a">
+                <tr>
+                    <th>Vehicle</th>
+                    <th>A/C / Non A/C</th>
+                    <th>Number</th>
+                    <th>Days</th>
+                </tr>
+                {% for i in vehicle %}
+                  <tr>
+                    <td><center>{{i.name}}</td>
+                      {% if i.ac_available %}<td><center>A/C</center></td>
+                      {% else %} <td><center>Non A/C</center></td>
+                      {% endif %}
+                    <td><center>{{i.number_plate}}</center></td>
+                    <td><center>{{i.no_of_days}}</center></td>
+                  </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <br><br>
+        <div>
+            <table class="a"><tr><th>Service Details</th></tr></table>
+            <table class="a">
+                <tr>
+                    <th>Date</th>
+                    <th>Service</th>
+                    <th>Description</th>
+                </tr>
+                {% for i in special_service %}
+                  <tr>
+                    <td><center>{{i.date}}</td>
+                    <td><center>{{i.service}}</td>
+                    <td><center>{{i.description}}</td>
+                  </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <p>Hope the above are clear and in order. We value and welcome any suggestions you may wish to share with us.
+            For any further customizations and clarifications regarding the above package, please feel free to contact us.
+        </p><br>
+        {% for i in vehicle %}
+        <u><b>Emergency Contact Details</u></b>
+        <p>Contact Person <b>: {{i.contact_person}}</b></p>
+        <p>Mobile No <b>: {{i.phone_number}}</b></p>
+        <p>Service Provider <b>: {{i.service_provider}}</b></p>
+        {% endfor %}
+        <br>
+        <p>Kindly provide your best service to our VIP Guest.</p><br>
+        <p>With Warm Regards for Anand Tours & Travels</p>
+        <p><b>ANAND TOURS & TRAVELS<br>0265 6500203 <br>anandtours@outlook.com</b></p>
+    </body>
+</html>
