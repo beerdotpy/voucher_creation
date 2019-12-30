@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <title>Guest Voucher</title>
+        <style>
+            table {
+              border-collapse: collapse;
+              border: 1px solid black;
+            }
+
+            th,td {
+              border: 1px solid black;
+            }
+
+            table.a {
+              table-layout: auto;
+              width: 100%;
+            }
+
+            table.b {
+              table-layout: fixed;
+              width: 180px;
+            }
+
+            table.c {
+              table-layout: auto;
+              width: 100%;
+            }
+
+            table.d {
+              table-layout: fixed;
+              width: 100%;
+            }
+        </style>
+    </head>
+    <body style="width:1000px">
+        <div class="wrapper">
+            <div style="float:left"><img src="{{image_path}}" height="150px"></div>
+            <div style="float:right">
+                <h1>Anand Tours & Travels</h1>
+                <p>Tower-C, SF, Shop No. 09 Vardhaman Enclave, <br>Opp. Hotel Labh Regency, Atladara,<br>Vadodara – 390012 <br>(O) 0265-2338203 (M) : +91 9662045203 / 9925227203<br>EMAIL: anandtours@outlook.com</p>
+            </div>
+            <center><b><p style="position:relative;top:180px">GUEST VOUCHER</p></b></center>
+            <hr style="position:relative;width:100%!important;top:40px">
+            </div>
+        </div>
+        <br>
+        <div>
+            <p style="position:absolute"><b>Date : {{current_date}}</b></p>
+            <p align="right" style="position:relative">Confirmation No. : {{confirmation_no}}</p>
+            <br>
+            <p><b>Booking ID</b> : {{confirmation_no}}</p>
+            <p><b>City</b> : {{city}}</p>
+            <p><b>Hotel</b> : {{hotels | safe }}</p>
+            <p><b>Service Provider</b> : Andaman Ocean Tours And Travels<br>
+                                        Shop No. 3 - Samsuvas Plaza, Gurudwara Lane, Aberdeen Bazar,  Port Blair,
+                                        Andaman and Nicobar Islands – 744101 ; PH No. +91 3192 2233 242
+                                        Mob No. - +91 7063 934 032 /+91 9933 244 076 / +91 7063 987 505 /
+                                        +91 7063 944 280 / +91 7063 928 089 / +91 7063 987 404</p>
+            <p><b>Operational Tour Manager</b> : {{tour_manager}}</p>
+            <p><b>Meeting Point</b> : Meet Representative at Arrival Gate at International Airport-Portblair.</p>
+            <p><b>Lead Pax Name</b> : {{name_of_guest}}</p>
+            <p><b>Arrival</b> : {{arrival}} By {{pickup_place}}</p>
+            <p><b>Total No. Of Rooms </b>: {{rooms}}</p>
+            <p><b>No. Of Persons </b> : {{no_of_pax}}</p>
+            <p><b>Meal Plan</b>: {{meal_plan}}</p>
+            <p><b>Cruise</b>: Private Cruise</p>
+            <p><b>Vehicle</b>: {{vehicle_name}}</p>
+            <table class="a">
+                <tr>
+                    <th>DATE & DAYS</th>
+                    <th>PLACE COVERED</th>
+                    <th>NIGHT STAY</th>
+                    <th>Hotel Name</th>
+                </tr>
+                {% for i in itinerary %}
+                    <tr>
+                        <td><center>{{i.title}}</td>
+                        <td><center>{{i.description}}</td>
+                        <td><center>{{i.hotel_place}}</td>
+                        <td><center>{{i.hotel_name}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        <br>
+        <p><b>Important:</b><br>
+            <ul>
+                <li>In case of any errors in the above information, it is expected from Client / Traveller to contact us immediately, after receiving the email.</li>
+                <li>If flight is delay due to any reason, kindly inform us without any delay or else you have to pay the vehicle waiting charges.</li>
+                <li>Client must bring the confirmation voucher and the final confirmed package copy along with him.</li>
+                <li>Photo Identity card’s copy and 01 passport size photo must be handed to the tour manager/driver on arrival at the airport.</li>
+            </ul>
+        </p>
+        <br>
+        <p>Wishing You a Happy and Safe Journey....</p>
+        <p><b><br>For ANAND TOURS & TRAVELS <br>anandtours@outlook.com</b></p>
+        </div>
+
+    </body>
+</html>

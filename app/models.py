@@ -11,6 +11,11 @@ from threading import Thread
 
 
 class QuoteVoucher(models.Model):
+    is_andaman = models.BooleanField(default=False)
+    is_goa = models.BooleanField(default=False)
+    is_himachal = models.BooleanField(default=False)
+    is_normal = models.BooleanField(default=True)
+    confirmed = models.BooleanField()
     email_id = models.CharField(max_length=200)
     no_of_pax = models.CharField(max_length=200)
     package_type = models.CharField(max_length=200)
@@ -23,8 +28,6 @@ class QuoteVoucher(models.Model):
     reservation_policy = models.TextField()
     cancellation_policy = models.TextField()
     terms_conditions = models.TextField()
-    confirmed = models.BooleanField()
-    confirmation_number = models.CharField(max_length=200)
     name_of_guest = models.CharField(max_length=200)
     phone_number = models.IntegerField()
 
@@ -60,6 +63,7 @@ class Hotel(models.Model):
     occupancy_type = models.CharField(max_length=200)
     no_of_rooms = models.IntegerField()
     no_of_nights = models.IntegerField()
+    confirmation_number = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.name
@@ -76,6 +80,7 @@ class Vehicle(models.Model):
     contact_person = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=12)
     service_provider = models.CharField(max_length=100)
+    confirmation_number = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.name
@@ -99,31 +104,132 @@ class Worker(Thread):
         self = self.voucher
         output_path = os.getcwd() + '/templates/output/test.pdf'
         if not self.confirmed:
-            data = {'current_date': date.today(),
-                    'image_path': os.getcwd() + '/templates/images/logo.png',
-                    'no_of_pax': self.no_of_pax,
-                    'arrival': self.arrival,
-                    'departure': self.pickup_place,
-                    'rooms': self.no_of_rooms,
-                    'duration': self.package_type,
-                    'itinerary': self.itenary_set.all().values(),
-                    'hotels': self.hotel_set.all().values(),
-                    'vehicle': self.vehicle_set.all().values(),
-                    'amount': self.price,
-                    'inclusion': self.package_inclusion.split("\n"),
-                    'exclusion': self.package_exclusion.split("\n"),
-                    'reservation_policy': self.reservation_policy.split("\n"),
-                    'cancellation_policy': self.cancellation_policy.split("\n"),
-                    'terms': self.terms_conditions.split("\n"),
-                    'special_service': self.specialservice_set.all().values()}
-            template = get_template('quoteVoucher.html')
-            html = template.render(data)
-            pdfkit.from_string(html, output_path)
-            msg = EmailMessage('Quote Voucher', 'Please find the quotation attached', 'sarthakmeh03@gmail.com',
-                               [self.email_id])
-            msg.content_subtype = "html"
-            msg.attach_file(output_path)
-            msg.send()
+            # NORMAL VOUCHER
+            if self.is_normal:
+                data = {'current_date': date.today(),
+                        'image_path': os.getcwd() + '/templates/images/logo.png',
+                        'no_of_pax': self.no_of_pax,
+                        'arrival': self.arrival,
+                        'departure': self.pickup_place,
+                        'rooms': self.no_of_rooms,
+                        'duration': self.package_type,
+                        'itinerary': self.itenary_set.all().values(),
+                        'hotels': self.hotel_set.all().values(),
+                        'vehicle': self.vehicle_set.all().values(),
+                        'amount': self.price,
+                        'inclusion': self.package_inclusion.split("\n"),
+                        'exclusion': self.package_exclusion.split("\n"),
+                        'reservation_policy': self.reservation_policy.split("\n"),
+                        'cancellation_policy': self.cancellation_policy.split("\n"),
+                        'terms': self.terms_conditions.split("\n"),
+                        'special_service': self.specialservice_set.all().values()}
+                template = get_template('quoteVoucher.html')
+                html = template.render(data)
+                pdfkit.from_string(html, output_path)
+                msg = EmailMessage('Quote Voucher', 'Please find the quotation attached', 'sarthakmeh03@gmail.com',
+                                   [self.email_id])
+                msg.content_subtype = "html"
+                msg.attach_file(output_path)
+                msg.send()
+                # ANDAMAN VOUCHER
+            elif self.is_andaman:
+                hotels_str = ""
+                its = []
+                hotels_list = self.hotel_set.all().values()
+                itinerary = self.itenary_set.all().values()
+                for i in range(len(hotels_list)):
+                    hotels_str += hotels_list[i]['name'] + " (" + hotels_list[i]['room_type'] + ") " + " - " + \
+                                  hotels_list[i]['place'] + "<br />\n"
+                    its.append({'title': itinerary[i]['title'],
+                                'description': itinerary[i]['description'],
+                                'hotel_name': hotels_list[i]['name'],
+                                'hotel_place': hotels_list[i]['place']
+                                })
+                data = {'current_date': date.today(),
+                        'image_path': os.getcwd() + '/templates/images/logo.png',
+                        'confirmation_no': self.hotel_set.all().values()[0]['confirmation_number'],
+                        'tour_manager': self.hotel_set.all().values()[0]['contact_person'] + " - " +
+                                        str(self.hotel_set.all().values()[0]['phone_number']),
+                        'city': self.package_type,
+                        'hotels': hotels_str,
+                        'name_of_guest': self.name_of_guest,
+                        'arrival': self.arrival,
+                        'pickup_place': self.pickup_place,
+                        'rooms': self.no_of_rooms,
+                        'no_of_pax': self.no_of_pax,
+                        'meal_plan': self.hotel_set.all().values()[0]['meal_plan'],
+                        'vehicle_name': self.vehicle_set.all().values()[0]['name'],
+                        'itinerary': its}
+                template = get_template('andamanVoucher.html')
+                html = template.render(data)
+                pdfkit.from_string(html, output_path)
+                msg = EmailMessage('Andaman Voucher', 'Please find the quotation attached', 'sarthakmeh03@gmail.com',
+                                   [self.email_id])
+                msg.content_subtype = "html"
+                msg.attach_file(output_path)
+                msg.send()
+                # GOA VOUCHER
+            elif self.is_goa:
+                hotel = self.hotel_set.all().values()[0]
+                data = {'current_date': date.today(),
+                        'image_path': os.getcwd() + '/templates/images/logo.png',
+                        'confirmation_no': self.hotel_set.all().values()[0]['confirmation_number'],
+                        'hotel': hotel['name'] + "<br />\n" + hotel['address'],
+                        'name_of_guest': self.name_of_guest,
+                        'check_in': hotel['check_in'],
+                        'check_out': hotel['check_out'],
+                        'no_of_pax': self.no_of_pax,
+                        'no_of_nights': hotel['no_of_nights'],
+                        'rooms': self.no_of_rooms,
+                        'room_type': hotel['room_type'],
+                        'meal_plan': hotel['meal_plan'],
+                        'inclusion': self.package_inclusion.split("\n"),
+                        'cancellation_policy': self.cancellation_policy.split("\n")}
+                template = get_template('goaVoucher.html')
+                html = template.render(data)
+                pdfkit.from_string(html, output_path)
+                msg = EmailMessage('Goa Voucher', 'Please find the quotation attached', 'sarthakmeh03@gmail.com',
+                                   [self.email_id])
+                msg.content_subtype = "html"
+                msg.attach_file(output_path)
+                msg.send()
+            # HIMACHAL VOUCHER
+            elif self.is_himachal:
+                hotels_str = ""
+                its = []
+                hotels_list = self.hotel_set.all().values()
+                itinerary = self.itenary_set.all().values()
+                for i in range(len(hotels_list)):
+                    hotels_str += hotels_list[i]['name'] + " (" + hotels_list[i]['room_type'] + ") " + " - " + \
+                                  hotels_list[i]['place'] + "<br />\n"
+                    its.append({'title': itinerary[i]['title'],
+                                'description': itinerary[i]['description'],
+                                'hotel_name': hotels_list[i]['name'],
+                                'hotel_place': hotels_list[i]['place']
+                                })
+                data = {'current_date': date.today(),
+                        'image_path': os.getcwd() + '/templates/images/logo.png',
+                        'confirmation_no': self.hotel_set.all().values()[0]['confirmation_number'],
+                        'tour_manager': self.hotel_set.all().values()[0]['contact_person'] + " - " +
+                                        str(self.hotel_set.all().values()[0]['phone_number']),
+                        'city': self.package_type,
+                        'hotels': hotels_str,
+                        'name_of_guest': self.name_of_guest,
+                        'arrival': self.arrival,
+                        'pickup_place': self.pickup_place,
+                        'rooms': self.no_of_rooms,
+                        'no_of_pax': self.no_of_pax,
+                        'vehicle_name': self.vehicle_set.all().values()[0]['name'],
+                        'itinerary': its}
+                template = get_template('himachalVoucher.html')
+                html = template.render(data)
+                pdfkit.from_string(html, output_path)
+                msg = EmailMessage('Himachal Voucher', 'Please find the quotation attached', 'sarthakmeh03@gmail.com',
+                                   [self.email_id])
+                msg.content_subtype = "html"
+                msg.attach_file(output_path)
+                msg.send()
+        # HOTEL AND DRIVER VOUCHER
         else:
             msg = EmailMessage('Hotel and Driver Voucher', 'Please find the voucher attached', 'sarthakmeh03@gmail.com',
                                [self.email_id])
@@ -145,7 +251,7 @@ class Worker(Thread):
                         'mobile_no': i['phone_number'],
                         'contact_position': i['contact_person_position'],
                         'place': i['place'],
-                        'confirmation_no': self.confirmation_number
+                        'confirmation_no': i['confirmation_number']
                         }
                 template = get_template('hotelVoucher.html')
                 html = template.render(data)
@@ -153,7 +259,7 @@ class Worker(Thread):
                 msg.content_subtype = "html"
                 msg.attach_file(output_path)
             driver_data = {'current_date': date.today(),
-                           'confirmation_no': self.confirmation_number,
+                           'confirmation_no': self.vehicle_set.all().values[0]['confirmation_number'],
                            'guest_name': self.name_of_guest,
                            'image_path': os.getcwd() + '/templates/images/logo.png',
                            'arrival': self.arrival,

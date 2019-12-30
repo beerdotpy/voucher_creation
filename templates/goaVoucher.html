@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <title>Guest Voucher</title>
+        <style>
+            table {
+              border-collapse: collapse;
+              border: 1px solid black;
+            }
+
+            th,td {
+              border: 1px solid black;
+            }
+
+            table.a {
+              table-layout: auto;
+              width: 100%;
+            }
+
+            table.b {
+              table-layout: fixed;
+              width: 180px;
+            }
+
+            table.c {
+              table-layout: auto;
+              width: 100%;
+            }
+
+            table.d {
+              table-layout: fixed;
+              width: 100%;
+            }
+        </style>
+    </head>
+    <body style="width:1000px">
+        <div class="wrapper">
+            <div style="float:left"><img src="{{image_path}}" height="150px"></div>
+            <div style="float:right">
+                <h1>Anand Tours & Travels</h1>
+                <p>Tower-C, SF, Shop No. 09 Vardhaman Enclave, <br>Opp. Hotel Labh Regency, Atladara,<br>Vadodara – 390012 <br>(O) 0265-2338203 (M) : +91 9662045203 / 9925227203<br>EMAIL: anandtours@outlook.com</p>
+            </div>
+            <center><b><p style="position:relative;top:180px">GUEST VOUCHER</p></b></center>
+            <hr style="position:relative;width:100%!important;top:40px">
+            </div>
+        </div>
+        <br>
+        <div>
+            <p><b>Booking Date : {{current_date}}</b></p>
+            <p><b>Confirmation No.</b> : {{confirmation_no}}</p>
+            <p><b>Property</b> : {{hotel | safe}}</p>
+            <p><b>Name of Guest</b> : {{name_of_guest}}</p>
+            <p><b>Check In</b> : {{check_in}} </p>
+            <p><b>Check Out</b> : {{check_out}}</p>
+            <p><b>No. Of Pax </b> : {{no_of_pax}}</p>
+            <p><b>Room Nights</b>: {{no_of_nights}}</p>
+            <p><b>No. Of Rooms </b>: {{rooms}}</p>
+            <p><b>Type Of Rooms </b>: {{room_type}}</p>
+            <p><b>Plan </b>: {{meal_plan}}</p>
+            <p><b>Inclusions </b>:
+                <ul>
+                    {% for i in inclusion %}
+                      <li>{{i}}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+            <p><b>Remark</b>: All other to be collected directly from the Guest.</p>
+            <p><b>Cancellation Policy </b>:
+                <ul>
+                    {% for i in cancellation_policy %}
+                      <li>{{i}}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+        </div>
+        <br>
+        <p><b><u>Please Note:</u></b><br>
+            <ul>
+                <li>Check in time is 13:00hrs. & check out time is 12:00hrs.</li>
+                <li>Early check in and late check out subject to availability.</li>
+                <li>Transfer before 07:30am & after 07:00pm will be charge additional @ Rs. 500/-.</li>
+            </ul>
+        </p>
+        <p><b>PS</b> : As Per the Government directive, you are requested to produce guest(Indian Nationality) their
+            photo identity document such as <b>Driving License/Pan Card/Voter ID Card/Passport's photocopy etc and For
+                Foreign Nationality original Passport and Visa </b> at the point of check in at the hotel. 
+            We appreciate your cooperation.</p>
+        <br>
+        <p>Wishing You a Happy and Safe Journey....</p>
+        <p><b><br>For ANAND TOURS & TRAVELS <br>anandtours@outlook.com</b></p>
+        </div>
+
+    </body>
+</html>
