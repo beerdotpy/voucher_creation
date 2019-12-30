@@ -259,7 +259,7 @@ class Worker(Thread):
                 msg.content_subtype = "html"
                 msg.attach_file(output_path)
             driver_data = {'current_date': date.today(),
-                           'confirmation_no': self.vehicle_set.all().values[0]['confirmation_number'],
+                           'confirmation_no': self.vehicle_set.all().values()[0]['confirmation_number'],
                            'guest_name': self.name_of_guest,
                            'image_path': os.getcwd() + '/templates/images/logo.png',
                            'arrival': self.arrival,
