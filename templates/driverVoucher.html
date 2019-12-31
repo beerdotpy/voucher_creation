@@ -84,17 +84,13 @@
             <table class="a">
                 <tr>
                     <th>Vehicle</th>
-                    <th>A/C / Non A/C</th>
-                    <th>Number</th>
                     <th>Days</th>
                 </tr>
                 {% for i in vehicle %}
                   <tr>
                     <td><center>{{i.name}}</td>
-                      {% if i.ac_available %}<td><center>A/C</center></td>
                       {% else %} <td><center>Non A/C</center></td>
                       {% endif %}
-                    <td><center>{{i.number_plate}}</center></td>
                     <td><center>{{i.no_of_days}}</center></td>
                   </tr>
                 {% endfor %}

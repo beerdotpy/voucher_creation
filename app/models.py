@@ -9,13 +9,19 @@ from datetime import date
 import time
 from threading import Thread
 
+voucher_type_choices = (
+    ('himachal', 'Himachal'),
+    ('goa', 'Goa'),
+    ('andaman', 'Andaman'),
+    ('normal', 'Normal')
+)
+
 
 class QuoteVoucher(models.Model):
-    is_andaman = models.BooleanField(default=False)
-    is_goa = models.BooleanField(default=False)
-    is_himachal = models.BooleanField(default=False)
-    is_normal = models.BooleanField(default=True)
+    type = models.CharField(choices=voucher_type_choices, max_length=100)
     confirmed = models.BooleanField()
+    name_of_guest = models.CharField(max_length=200)
+    phone_number = models.IntegerField()
     email_id = models.CharField(max_length=200)
     no_of_pax = models.CharField(max_length=200)
     package_type = models.CharField(max_length=200)
@@ -28,8 +34,6 @@ class QuoteVoucher(models.Model):
     reservation_policy = models.TextField()
     cancellation_policy = models.TextField()
     terms_conditions = models.TextField()
-    name_of_guest = models.CharField(max_length=200)
-    phone_number = models.IntegerField()
 
     def save(self, *args, **kwargs):
         Worker(self).start()
@@ -63,7 +67,7 @@ class Hotel(models.Model):
     occupancy_type = models.CharField(max_length=200)
     no_of_rooms = models.IntegerField()
     no_of_nights = models.IntegerField()
-    confirmation_number = models.CharField(max_length=200)
+    confirmation_number = models.CharField(max_length=200, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -74,13 +78,11 @@ class Vehicle(models.Model):
     category = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
     no_of_vehicle = models.IntegerField()
-    number_plate = models.CharField(max_length=20)
     no_of_days = models.IntegerField()
-    ac_available = models.BooleanField()
     contact_person = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=12)
     service_provider = models.CharField(max_length=100)
-    confirmation_number = models.CharField(max_length=200)
+    confirmation_number = models.CharField(max_length=200, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -105,7 +107,7 @@ class Worker(Thread):
         output_path = os.getcwd() + '/templates/output/test.pdf'
         if not self.confirmed:
             # NORMAL VOUCHER
-            if self.is_normal:
+            if self.type == 'normal':
                 data = {'current_date': date.today(),
                         'image_path': os.getcwd() + '/templates/images/logo.png',
                         'no_of_pax': self.no_of_pax,
@@ -123,6 +125,7 @@ class Worker(Thread):
                         'cancellation_policy': self.cancellation_policy.split("\n"),
                         'terms': self.terms_conditions.split("\n"),
                         'special_service': self.specialservice_set.all().values()}
+                output_path = os.getcwd() + '/templates/output/' + self.name_of_guest + ".pdf"
                 template = get_template('quoteVoucher.html')
                 html = template.render(data)
                 pdfkit.from_string(html, output_path)
@@ -132,7 +135,7 @@ class Worker(Thread):
                 msg.attach_file(output_path)
                 msg.send()
                 # ANDAMAN VOUCHER
-            elif self.is_andaman:
+            elif self.type == 'andaman':
                 hotels_str = ""
                 its = []
                 hotels_list = self.hotel_set.all().values()
@@ -169,7 +172,7 @@ class Worker(Thread):
                 msg.attach_file(output_path)
                 msg.send()
                 # GOA VOUCHER
-            elif self.is_goa:
+            elif self.type == 'goa':
                 hotel = self.hotel_set.all().values()[0]
                 data = {'current_date': date.today(),
                         'image_path': os.getcwd() + '/templates/images/logo.png',
@@ -194,7 +197,7 @@ class Worker(Thread):
                 msg.attach_file(output_path)
                 msg.send()
             # HIMACHAL VOUCHER
-            elif self.is_himachal:
+            elif self.type == 'himachal':
                 hotels_str = ""
                 its = []
                 hotels_list = self.hotel_set.all().values()
