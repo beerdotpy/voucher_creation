@@ -48,34 +48,81 @@
             <p style="position:absolute"><b>Date : {{current_date}}</b></p>
             <p align="right" style="position:relative">Confirmation No. : {{confirmation_no}}</p>
             <br>
-            <p><b>Booking ID</b> : {{confirmation_no}}</p>
-            <p><b>City</b> : {{city}}</p>
-            <p><b>Hotel</b> : {{hotels | safe }}</p>
-            <p><b>Operational Tour Manager</b> : {{tour_manager}}</p>
-            <p><b>Meeting Point</b> : Meet Representative at Arrival Gate at International Airport-Portblair.</p>
-            <p><b>Lead Pax Name</b> : {{name_of_guest}}</p>
-            <p><b>Arrival</b> : {{arrival}} By {{pickup_place}}</p>
-            <p><b>Total No. Of Rooms </b>: {{rooms}}</p>
-            <p><b>No. Of Persons </b> : {{no_of_pax}}</p>
-            <p><b>Meal Plan</b>: {{meal_plan}}</p>
-            <p><b>Cruise</b>: Private Cruise</p>
-            <p><b>Vehicle</b>: {{vehicle_name}}</p>
+            <table style="border:0px!important">
+                <tr>
+                    <td style="padding:10px;border:0px!important"><b>Booking ID</b></td>
+                    <td style="padding:10px;border:0px!important">: {{confirmation_no}}</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px;border:0px!important"><b>City</b> </td>
+                    <td style="padding:10px;border:0px!important">: {{city}}</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px;border:0px!important"><b>Operational Tour Manager</b></td>
+                    <td style="padding:10px;border:0px!important">: {{tour_manager}}</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px;border:0px!important"><b>Meeting Point</b></td>
+                    <td style="padding:10px;border:0px!important">: Meet Representative at Arrival Gate at International Airport-Portblair.</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px;border:0px!important"><b>Lead Pax Name</b></td>
+                    <td style="padding:10px;border:0px!important">: {{name_of_guest}}</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px;border:0px!important"><b>Total No. Of Rooms</b></td>
+                    <td style="padding:10px;border:0px!important">: {{rooms}}</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px;border:0px!important"><b>No. Of Persons </b></td>
+                    <td style="padding:10px;border:0px!important"> : {{no_of_pax}}</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px;border:0px!important"><b>Cruise</b></td>
+                    <td style="padding:10px;border:0px!important">: Private Cruise</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px;border:0px!important"><b>Vehicle</b></td>
+                    <td style="padding:10px;border:0px!important">: {{vehicle_name}}</td>
+            </table>
+            <br>
+            <h3>Tour Itinerary</h3>
             <table class="a">
                 <tr>
-                    <th>DATE & DAYS</th>
-                    <th>PLACE COVERED</th>
-                    <th>NIGHT STAY</th>
-                    <th>Hotel Name</th>
+                    <th>DAYS</th>
+                    <th>Itinerary</th>
                 </tr>
                 {% for i in itinerary %}
                     <tr>
                         <td><center>{{i.title}}</td>
                         <td><center>{{i.description}}</td>
-                        <td><center>{{i.hotel_place}}</td>
-                        <td><center>{{i.hotel_name}}</td>
                     </tr>
                 {% endfor %}
-            </table>
+            </table><br>
+            <div>
+                <table class="a"><tr><th>HOTEL DETAILS</th></tr></table>
+                <table class="a">
+                    <tr>
+                        <th>Location</th>
+                        <th>Hotel Name</th>
+                        <th>Room Type</th>
+                        <th>Meal Plan</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                    </tr>
+                    {% for i in hotels %}
+                    <tr>
+                        <td><center>{{i.place}}</td>
+                        <td><center>{{i.name}}</td>
+                        <td><center>{{i.room_type}}</td>
+                        <td><center>{{i.meal_plan}}</td>
+                        <td><center>{{i.check_in}}</td>
+                        <td><center>{{i.check_out}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
         <br>
         <p><b>Important:</b><br>
             <ul>

@@ -21,7 +21,7 @@ class QuoteVoucher(models.Model):
     type = models.CharField(choices=voucher_type_choices, max_length=100)
     confirmed = models.BooleanField()
     name_of_guest = models.CharField(max_length=200)
-    phone_number = models.IntegerField()
+    phone_number = models.CharField(max_length=15)
     email_id = models.CharField(max_length=200)
     no_of_pax = models.CharField(max_length=200)
     package_type = models.CharField(max_length=200)
@@ -40,7 +40,7 @@ class QuoteVoucher(models.Model):
         return super(QuoteVoucher, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return self.package_type
+        return self.name_of_guest
 
 
 class Itenary(models.Model):
@@ -58,8 +58,8 @@ class Hotel(models.Model):
     check_in = models.DateField()
     check_out = models.DateField()
     address = models.TextField(blank=True)
-    contact_person = models.TextField(max_length=200, blank=True)
-    phone_number = models.IntegerField(blank=True)
+    contact_person = models.CharField(max_length=200, blank=True)
+    phone_number = models.CharField(max_length=15, blank=True)
     contact_person_position = models.CharField(max_length=200, blank=True)
     place = models.CharField(max_length=100)
     meal_plan = models.CharField(max_length=100)
@@ -79,7 +79,7 @@ class Vehicle(models.Model):
     name = models.CharField(max_length=200)
     no_of_vehicle = models.IntegerField()
     no_of_days = models.IntegerField()
-    contact_person = models.CharField(max_length=200)
+    contact_person = models.CharField(max_length=15)
     phone_number = models.CharField(max_length=12)
     service_provider = models.CharField(max_length=100)
     confirmation_number = models.CharField(max_length=200, blank=True)
@@ -136,25 +136,13 @@ class Worker(Thread):
                 msg.send()
                 # ANDAMAN VOUCHER
             elif self.type == 'andaman':
-                hotels_str = ""
-                its = []
-                hotels_list = self.hotel_set.all().values()
-                itinerary = self.itenary_set.all().values()
-                for i in range(len(hotels_list)):
-                    hotels_str += hotels_list[i]['name'] + " (" + hotels_list[i]['room_type'] + ") " + " - " + \
-                                  hotels_list[i]['place'] + "<br />\n"
-                    its.append({'title': itinerary[i]['title'],
-                                'description': itinerary[i]['description'],
-                                'hotel_name': hotels_list[i]['name'],
-                                'hotel_place': hotels_list[i]['place']
-                                })
                 data = {'current_date': date.today(),
                         'image_path': os.getcwd() + '/templates/images/logo.png',
                         'confirmation_no': self.hotel_set.all().values()[0]['confirmation_number'],
                         'tour_manager': self.hotel_set.all().values()[0]['contact_person'] + " - " +
                                         str(self.hotel_set.all().values()[0]['phone_number']),
                         'city': self.package_type,
-                        'hotels': hotels_str,
+                        'hotels': self.hotel_set.all().values(),
                         'name_of_guest': self.name_of_guest,
                         'arrival': self.arrival,
                         'pickup_place': self.pickup_place,
@@ -162,7 +150,7 @@ class Worker(Thread):
                         'no_of_pax': self.no_of_pax,
                         'meal_plan': self.hotel_set.all().values()[0]['meal_plan'],
                         'vehicle_name': self.vehicle_set.all().values()[0]['name'],
-                        'itinerary': its}
+                        'itinerary': self.itenary_set.all().values()}
                 template = get_template('andamanVoucher.html')
                 html = template.render(data)
                 pdfkit.from_string(html, output_path)
@@ -198,32 +186,20 @@ class Worker(Thread):
                 msg.send()
             # HIMACHAL VOUCHER
             elif self.type == 'himachal':
-                hotels_str = ""
-                its = []
-                hotels_list = self.hotel_set.all().values()
-                itinerary = self.itenary_set.all().values()
-                for i in range(len(hotels_list)):
-                    hotels_str += hotels_list[i]['name'] + " (" + hotels_list[i]['room_type'] + ") " + " - " + \
-                                  hotels_list[i]['place'] + "<br />\n"
-                    its.append({'title': itinerary[i]['title'],
-                                'description': itinerary[i]['description'],
-                                'hotel_name': hotels_list[i]['name'],
-                                'hotel_place': hotels_list[i]['place']
-                                })
                 data = {'current_date': date.today(),
                         'image_path': os.getcwd() + '/templates/images/logo.png',
                         'confirmation_no': self.hotel_set.all().values()[0]['confirmation_number'],
                         'tour_manager': self.hotel_set.all().values()[0]['contact_person'] + " - " +
                                         str(self.hotel_set.all().values()[0]['phone_number']),
                         'city': self.package_type,
-                        'hotels': hotels_str,
+                        'hotels': self.hotel_set.all().values(),
                         'name_of_guest': self.name_of_guest,
                         'arrival': self.arrival,
                         'pickup_place': self.pickup_place,
                         'rooms': self.no_of_rooms,
                         'no_of_pax': self.no_of_pax,
                         'vehicle_name': self.vehicle_set.all().values()[0]['name'],
-                        'itinerary': its}
+                        'itinerary': self.itenary_set.all().values()}
                 template = get_template('himachalVoucher.html')
                 html = template.render(data)
                 pdfkit.from_string(html, output_path)
