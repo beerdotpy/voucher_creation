@@ -52,40 +52,40 @@
             <br>
             <table style="border:0px!important;width:1000px">
                 <tr>
-                    <td style="padding:10px;border:0px!important;width:200px""><b>Booking ID</b></td>
-                    <td style="padding:10px;border:0px!important;width:800px">: {{confirmation_no}}</td>
+                    <td style="padding:10px;border:0px!important;width:300px""><b>Booking ID</b></td>
+                    <td style="padding:10px;border:0px!important;width:700px">: {{confirmation_no}}</td>
                 </tr>
                 <tr>
-                    <td style="padding:10px;border:0px!important;width:200px"><b>City</b> </td>
-                    <td style="padding:10px;border:0px!important;width:800px">: {{city}}</td>
+                    <td style="padding:10px;border:0px!important;width:300px"><b>City</b> </td>
+                    <td style="padding:10px;border:0px!important;width:700px">: {{city}}</td>
                 </tr>
                 <tr>
-                    <td style="padding:10px;border:0px!important;width:200px"><b>Operational Tour Manager</b></td>
-                    <td style="padding:10px;border:0px!important;width:800px">: {{tour_manager}}</td>
+                    <td style="padding:10px;border:0px!important;width:300px"><b>Operational Tour Manager</b></td>
+                    <td style="padding:10px;border:0px!important;width:700px">: {{tour_manager}}</td>
                 </tr>
                 <tr>
-                    <td style="padding:10px;border:0px!important;width:200px"><b>Meeting Point</b></td>
-                    <td style="padding:10px;border:0px!important;width:800px">: Meet Representative at Arrival Gate at International Airport-Portblair.</td>
+                    <td style="padding:10px;border:0px!important;width:300px"><b>Meeting Point</b></td>
+                    <td style="padding:10px;border:0px!important;width:700px">: Meet Representative at Arrival Gate at International Airport-Portblair.</td>
                 </tr>
                 <tr>
-                    <td style="padding:10px;border:0px!important;width:200px"><b>Lead Pax Name</b></td>
-                    <td style="padding:10px;border:0px!important;width:800px">: {{name_of_guest}}</td>
+                    <td style="padding:10px;border:0px!important;width:300px"><b>Lead Pax Name</b></td>
+                    <td style="padding:10px;border:0px!important;width:700px">: {{name_of_guest}}</td>
                 </tr>
                 <tr>
-                    <td style="padding:10px;border:0px!important;width:200px"><b>Total No. Of Rooms</b></td>
-                    <td style="padding:10px;border:0px!important;width:800px">: {{rooms}}</td>
+                    <td style="padding:10px;border:0px!important;width:300px"><b>Total No. Of Rooms</b></td>
+                    <td style="padding:10px;border:0px!important;width:700px">: {{rooms}}</td>
                 </tr>
                 <tr>
-                    <td style="padding:10px;border:0px!important;width:200px"><b>No. Of Persons </b></td>
-                    <td style="padding:10px;border:0px!important;width:800px"> : {{no_of_pax}}</td>
+                    <td style="padding:10px;border:0px!important;width:300px"><b>No. Of Persons </b></td>
+                    <td style="padding:10px;border:0px!important;width:700px"> : {{no_of_pax}}</td>
                 </tr>
                 <tr>
-                    <td style="padding:10px;border:0px!important;width:200px"><b>Cruise</b></td>
-                    <td style="padding:10px;border:0px!important;width:800px">: Private Cruise</td>
+                    <td style="padding:10px;border:0px!important;width:300px"><b>Cruise</b></td>
+                    <td style="padding:10px;border:0px!important;width:700px">: Private Cruise</td>
                 </tr>
                 <tr>
-                    <td style="padding:10px;border:0px!important;width:200px"><b>Vehicle</b></td>
-                    <td style="padding:10px;border:0px!important;width:800px">: {{vehicle_name}}</td>
+                    <td style="padding:10px;border:0px!important;width:300px"><b>Vehicle</b></td>
+                    <td style="padding:10px;border:0px!important;width:700px">: {{vehicle_name}}</td>
             </table>
             <br>
             <h3>Tour Itinerary</h3>
@@ -101,27 +101,29 @@
                     </tr>
                 {% endfor %}
             </table><br>
-            <table class="a"><tr><th>HOTEL DETAILS</th></tr></table>
-            <table class="a">
-                <tr>
-                    <th style="padding:7px">Location</th>
-                    <th style="padding:7px">Hotel Name</th>
-                    <th style="padding:7px">Room Type</th>
-                    <th style="padding:7px">Meal Plan</th>
-                    <th style="padding:7px">Check In</th>
-                    <th style="padding:7px">Check Out</th>
-                </tr>
-                {% for i in hotels %}
-                <tr>
-                    <td><center>{{i.place}}</td>
-                    <td><center>{{i.name}}</td>
-                    <td><center>{{i.room_type}}</td>
-                    <td><center>{{i.meal_plan}}</td>
-                    <td><center>{{i.check_in}}</td>
-                    <td><center>{{i.check_out}}</td>
-                </tr>
-                {% endfor %}
-            </table>
+            <div>
+                <table class="a"><tr><th>HOTEL DETAILS</th></tr></table>
+                <table class="a">
+                    <tr>
+                        <th style="padding:7px">Location</th>
+                        <th style="padding:7px">Hotel Name</th>
+                        <th style="padding:7px">Room Type</th>
+                        <th style="padding:7px">Meal Plan</th>
+                        <th style="padding:7px">Check In</th>
+                        <th style="padding:7px">Check Out</th>
+                    </tr>
+                    {% for i in hotels %}
+                    <tr>
+                        <td><center>{{i.place}}</td>
+                        <td><center>{{i.name}}</td>
+                        <td><center>{{i.room_type}}</td>
+                        <td><center>{{i.meal_plan}}</td>
+                        <td><center>{{i.check_in}}</td>
+                        <td><center>{{i.check_out}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
         <br>
         <p><b>Important:</b><br>
