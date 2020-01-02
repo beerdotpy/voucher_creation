@@ -100,7 +100,7 @@
                         <td style="width:600px"><center>{{i.description}}</td>
                     </tr>
                 {% endfor %}
-            </table><br>
+            </table><br><br>
             <div>
                 <table class="a"><tr><th>HOTEL DETAILS</th></tr></table>
                 <table class="a">
@@ -114,12 +114,12 @@
                     </tr>
                     {% for i in hotels %}
                     <tr>
-                        <td style="padding:7px"><center>{{i.place}}</td>
-                        <td style="padding:7px"><center>{{i.name}}</td>
-                        <td style="padding:7px"><center>{{i.room_type}}</td>
-                        <td style="padding:7px"><center>{{i.meal_plan}}</td>
-                        <td style="padding:7px"><center>{{i.check_in}}</td>
-                        <td style="padding:7px"><center>{{i.check_out}}</td>
+                        <td style="padding:7px">{{i.place}}</td>
+                        <td style="padding:7px">{{i.name}}</td>
+                        <td style="padding:7px">{{i.room_type}}</td>
+                        <td style="padding:7px">{{i.meal_plan}}</td>
+                        <td style="padding:7px">{{i.check_in}}</td>
+                        <td style="padding:7px">{{i.check_out}}</td>
                     </tr>
                     {% endfor %}
                 </table>
