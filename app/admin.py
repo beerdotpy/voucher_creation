@@ -21,6 +21,7 @@ class ServiceAdmin(admin.TabularInline):
 
 
 class VoucherAdmin(admin.ModelAdmin):
+    list_filter = ['name_of_guest', 'confirmed']
     inlines = (ItenaryAdmin, HotelAdmin, VehicleAdmin, ServiceAdmin)
 
 

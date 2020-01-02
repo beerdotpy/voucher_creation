@@ -89,15 +89,15 @@
                </tr>
             </table><br>
             <h3>Tour Itinerary</h3>
-            <table class="a">
+            <table class="a" style="width:1000px">
                 <tr>
                     <th>DAYS</th>
                     <th>PLACE COVERED</th>
                 </tr>
                 {% for i in itinerary %}
                     <tr>
-                        <td><center>{{i.title}}</td>
-                        <td><center>{{i.description}}</td>
+                        <td style="width:400px"><center>{{i.title}}</td>
+                        <td style="width:600px"><center>{{i.description}}</td>
                     </tr>
                 {% endfor %}
             </table><br>
@@ -114,12 +114,12 @@
                     </tr>
                     {% for i in hotels %}
                     <tr>
-                        <td><center>{{i.place}}</td>
-                        <td><center>{{i.name}}</td>
-                        <td><center>{{i.room_type}}</td>
-                        <td><center>{{i.meal_plan}}</td>
-                        <td><center>{{i.check_in}}</td>
-                        <td><center>{{i.check_out}}</td>
+                        <td style="padding:7px"><center>{{i.place}}</td>
+                        <td style="padding:7px"><center>{{i.name}}</td>
+                        <td style="padding:7px"><center>{{i.room_type}}</td>
+                        <td style="padding:7px"><center>{{i.meal_plan}}</td>
+                        <td style="padding:7px"><center>{{i.check_in}}</td>
+                        <td style="padding:7px"><center>{{i.check_out}}</td>
                     </tr>
                     {% endfor %}
                 </table>
